@@ -1,0 +1,35 @@
+name: Prepare signing tools (no keys)
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/android-signing-tools.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  export-android-signer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - name: Verify available Android SDK
+        run: |
+          echo "ANDROID_HOME=$ANDROID_HOME"
+          test -d "$ANDROID_HOME/build-tools"
+          ls "$ANDROID_HOME/build-tools"
+      - name: Locate signing tools
+        run: |
+          set -e
+          mkdir -p signing-tools
+          SDK_MGR="$(command -v sdkmanager)"
+          "$SDK_MGR" --install "build-tools;35.0.0"
+          cp "$ANDROID_HOME/build-tools/35.0.0/lib/apksigner.jar" signing-tools/apksigner.jar
+          cp "$ANDROID_HOME/build-tools/35.0.0/zipalign" signing-tools/zipalign
+          chmod 0755 signing-tools/zipalign
+          ls -lh signing-tools
+      - name: Upload tool bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: Android-signing-utilities
+          path: signing-tools/
+          if-no-files-found: error
