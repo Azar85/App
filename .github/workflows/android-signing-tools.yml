@@ -21,7 +21,11 @@ jobs:
         run: |
           set -e
           mkdir -p signing-tools
-          SDK_MGR="$(command -v sdkmanager)"
+          SDK_MGR="$(command -v sdkmanager || true)"
+          if [ -z "$SDK_MGR" ]; then
+            SDK_MGR="$(find "$ANDROID_HOME/cmdline-tools" -type f -name sdkmanager | head -1)"
+          fi
+          if [ -z "$SDK_MGR" ]; then echo "SDK manager missing"; exit 1; fi
           "$SDK_MGR" --install "build-tools;35.0.0"
           cp "$ANDROID_HOME/build-tools/35.0.0/lib/apksigner.jar" signing-tools/apksigner.jar
           cp "$ANDROID_HOME/build-tools/35.0.0/zipalign" signing-tools/zipalign
