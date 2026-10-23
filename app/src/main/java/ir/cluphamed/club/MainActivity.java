@@ -1,4 +1,4 @@
-package ir.cluphamed.savaran;
+package ir.cluphamed.club;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -31,8 +31,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class MainActivity extends Activity {
-    private static final String BASE = "https://cluphamedsavaran.ir/";
-    private static final String HOST = "cluphamedsavaran.ir";
+    private static final String BASE = "https://cluphamed.ir/";
+    private static final String HOST = "cluphamed.ir";
     private static final int GOLD = 0xFFD8B767;
     private static final int DARK = 0xFF070D1B;
     private static final int FILE_CODE = 9201;
@@ -60,7 +60,7 @@ public class MainActivity extends Activity {
         root.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
         root.setBackgroundColor(DARK);
         TextView header = new TextView(this);
-        header.setText("✦  کلوپ حامد سواران");
+        header.setText("✦  کلوپ حامد");
         header.setTextColor(GOLD);
         header.setTypeface(null, 1);
         header.setTextSize(18);
@@ -267,7 +267,7 @@ public class MainActivity extends Activity {
         Uri url = Uri.parse(browser.getUrl() == null ? "" : browser.getUrl());
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
-        intent.putExtra(Intent.EXTRA_TEXT, "کلوپ حامد سواران\n" + (isOurs(url) ? url.toString() : BASE));
+        intent.putExtra(Intent.EXTRA_TEXT, "کلوپ حامد\n" + (isOurs(url) ? url.toString() : BASE));
         startActivity(Intent.createChooser(intent, "اشتراک‌گذاری"));
     }
 

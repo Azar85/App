@@ -1,14 +1,14 @@
 plugins { id 'com.android.application' }
 
 android {
-    namespace 'ir.cluphamed.savaran'
+    namespace 'ir.cluphamed.club'
     compileSdk 35
 
     defaultConfig {
-        applicationId 'ir.cluphamed.savaran'
+        applicationId 'ir.cluphamed.club'
         minSdk 24
         targetSdk 35
-        versionCode 2
+        versionCode 1
         versionName '1.0.1'
     }
     buildTypes {
