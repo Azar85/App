@@ -30,13 +30,21 @@ jobs:
       - name: Install required Android platform
         run: |
           yes | "$SDK_MGR" --licenses >/dev/null || true
-          "$SDK_MGR" --install "platforms;android-35" "build-tools;35.0.0"
+          "$SDK_MGR" --install "platforms;android-36" "build-tools;35.0.0"
       - name: Gradle 8.9
         uses: gradle/actions/setup-gradle@v4
         with:
-          gradle-version: '8.9'
+          gradle-version: '8.13'
       - name: Assemble debug APK
-        run: gradle :app:assembleDebug --stacktrace
+        run: gradle :app:assembleDebug :app:assembleRelease :app:bundleRelease --stacktrace
+      - name: Store unsigned store candidates
+        uses: actions/upload-artifact@v4
+        with:
+          name: ClupHamed-14m-unsigned-store-builds
+          path: |
+            app/build/outputs/apk/release/*.apk
+            app/build/outputs/bundle/release/*.aab
+          if-no-files-found: error
       - name: Store APK
         uses: actions/upload-artifact@v4
         with:
