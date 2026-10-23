@@ -17,10 +17,20 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
-      - name: Android SDK
-        uses: android-actions/setup-android@v3
-      - name: Install platform and build tools
-        run: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+      - name: Verify preinstalled Android SDK
+        run: |
+          echo "ANDROID_HOME=$ANDROID_HOME"
+          echo "ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT"
+          SDK_MGR="$(command -v sdkmanager || true)"
+          if [ -z "$SDK_MGR" ]; then
+            SDK_MGR="$(find "${ANDROID_HOME:-/usr/local/lib/android/sdk}/cmdline-tools" -type f -name sdkmanager | head -1)"
+          fi
+          if [ -z "$SDK_MGR" ]; then echo "Android sdkmanager missing"; exit 1; fi
+          echo "SDK_MGR=$SDK_MGR" >> "$GITHUB_ENV"
+      - name: Install required Android platform
+        run: |
+          yes | "$SDK_MGR" --licenses >/dev/null || true
+          "$SDK_MGR" --install "platforms;android-35" "build-tools;35.0.0"
       - name: Gradle 8.9
         uses: gradle/actions/setup-gradle@v4
         with:
