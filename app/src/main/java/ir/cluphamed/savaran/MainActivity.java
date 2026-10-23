@@ -59,6 +59,20 @@ public class MainActivity extends Activity {
         root.setOrientation(LinearLayout.VERTICAL);
         root.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
         root.setBackgroundColor(DARK);
+        root.setOnApplyWindowInsetsListener((v, windowInsets) -> {
+            int left, top, right, bottom;
+            if (Build.VERSION.SDK_INT >= 30) {
+                android.graphics.Insets bars = windowInsets.getInsets(android.view.WindowInsets.Type.systemBars());
+                left = bars.left; top = bars.top; right = bars.right; bottom = bars.bottom;
+            } else {
+                left = windowInsets.getSystemWindowInsetLeft();
+                top = windowInsets.getSystemWindowInsetTop();
+                right = windowInsets.getSystemWindowInsetRight();
+                bottom = windowInsets.getSystemWindowInsetBottom();
+            }
+            v.setPadding(left, top, right, bottom);
+            return windowInsets;
+        });
         TextView header = new TextView(this);
         header.setText("✦  کلوپ حامد سواران");
         header.setTextColor(GOLD);
